@@ -1,0 +1,377 @@
+<!-- HPL Booking Page: BLOCK 2 (below the calendar) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+
+<style>
+  .hpl-book2 {
+    --hpl-blue: #0C71C2;
+    --hpl-blue-dark: #095A9B;
+    --hpl-blue-tint: #E7F1FA;
+    --hpl-ink: #111111;
+    --hpl-body: #33363B;
+    --hpl-muted: #5E636B;
+    --hpl-gray: #F4F5F7;
+    --hpl-line: #E2E4E8;
+    --hpl-white: #FFFFFF;
+    --hpl-head: "Roboto Slab", Georgia, "Times New Roman", serif;
+    --hpl-text: "Source Serif 4", Georgia, "Times New Roman", serif;
+
+    background: var(--hpl-white);
+    color: var(--hpl-body);
+    font-family: var(--hpl-text);
+    font-size: 18px;
+    line-height: 1.6;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    text-align: left;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-size-adjust: 100%;
+  }
+  .hpl-book2 *, .hpl-book2 *::before, .hpl-book2 *::after { box-sizing: border-box; }
+  .hpl-book2 h2, .hpl-book2 h3, .hpl-book2 p, .hpl-book2 ul, .hpl-book2 li, .hpl-book2 figure, .hpl-book2 figcaption {
+    margin: 0; padding: 0;
+  }
+  .hpl-book2 h2, .hpl-book2 h3 {
+    font-family: var(--hpl-head);
+    color: var(--hpl-ink);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    text-transform: none;
+  }
+  .hpl-book2 h2 { font-size: 28px; font-weight: 800; }
+  .hpl-book2 h3 { font-size: 20px; font-weight: 700; }
+  .hpl-book2 p { font-size: 18px; color: var(--hpl-body); }
+  .hpl-book2 img { max-width: 100%; height: auto; display: block; border: 0; }
+
+  .hpl-book2 .hpl-wrap { width: 100%; max-width: 760px; margin: 0 auto; padding: 0 20px; }
+  .hpl-book2 .hpl-section { padding: 56px 0; }
+  .hpl-book2 .hpl-section--gray { background: var(--hpl-gray); }
+  .hpl-book2 .hpl-eyebrow {
+    display: inline-block;
+    font-family: var(--hpl-head);
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--hpl-blue);
+    margin-bottom: 10px;
+  }
+
+  /* Buttons */
+  .hpl-book2 .hpl-btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    min-height: 52px; padding: 14px 22px; width: 100%;
+    background: var(--hpl-blue); color: var(--hpl-white);
+    font-family: var(--hpl-head); font-weight: 700; font-size: 17px; line-height: 1.2;
+    text-decoration: none; text-align: center; text-transform: uppercase; letter-spacing: 0.02em;
+    border: 0; border-radius: 10px; cursor: pointer;
+    box-shadow: 0 2px 0 var(--hpl-blue-dark);
+    transition: background .15s ease, transform .15s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .hpl-book2 .hpl-btn:hover { background: var(--hpl-blue-dark); color: var(--hpl-white); }
+  .hpl-book2 .hpl-btn:active { transform: translateY(1px); }
+  .hpl-book2 .hpl-btn:focus-visible { outline: 3px solid var(--hpl-ink); outline-offset: 3px; }
+  .hpl-book2 .hpl-btn svg { width: 18px; height: 18px; flex: none; }
+
+  /* Expect */
+  .hpl-book2 .hpl-expect { list-style: none; margin-top: 26px; display: grid; gap: 18px; }
+  .hpl-book2 .hpl-expect li { display: grid; grid-template-columns: 28px 1fr; gap: 14px; font-size: 18px; color: var(--hpl-body); }
+  .hpl-book2 .hpl-expect svg { width: 28px; height: 28px; color: var(--hpl-blue); margin-top: 1px; }
+
+  /* Testimonials (click-to-load) */
+  .hpl-book2 .hpl-testimonials { display: grid; gap: 28px; margin-top: 28px; }
+  .hpl-book2 .hpl-video {
+    position: relative; width: 100%; aspect-ratio: 16 / 9;
+    background: var(--hpl-ink); border-radius: 14px; overflow: hidden;
+    box-shadow: 0 10px 30px rgba(17,17,17,.12);
+  }
+  @supports not (aspect-ratio: 16 / 9) {
+    .hpl-book2 .hpl-video { height: 0; padding-top: 56.25%; }
+  }
+  .hpl-book2 .hpl-video-play {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    padding: 0; margin: 0; border: 0; background: var(--hpl-ink); cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .hpl-book2 .hpl-video-play img { width: 100%; height: 100%; object-fit: cover; opacity: .9; transition: opacity .2s ease; }
+  .hpl-book2 .hpl-video-play:hover img { opacity: 1; }
+  .hpl-book2 .hpl-video-icon {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 72px; height: 72px; border-radius: 50%;
+    background: var(--hpl-blue); color: var(--hpl-white);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 6px 20px rgba(0,0,0,.35);
+    transition: transform .15s ease, background .15s ease;
+  }
+  .hpl-book2 .hpl-video-icon svg { width: 30px; height: 30px; margin-left: 4px; }
+  .hpl-book2 .hpl-video-play:hover .hpl-video-icon { background: var(--hpl-blue-dark); transform: translate(-50%, -50%) scale(1.06); }
+  .hpl-book2 .hpl-video-play:focus-visible { outline: 3px solid var(--hpl-blue); outline-offset: -3px; }
+  .hpl-book2 .hpl-video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .hpl-book2 .hpl-video-caption {
+    font-family: var(--hpl-head); font-weight: 700; font-size: 15px; line-height: 1.35; color: var(--hpl-ink);
+    margin-top: 12px; text-align: center;
+  }
+
+  /* Coach */
+  .hpl-book2 .hpl-coach {
+    margin-top: 26px; display: grid; gap: 18px; justify-items: center; text-align: center;
+    background: var(--hpl-white); border: 1px solid var(--hpl-line); border-radius: 14px; padding: 26px 22px;
+  }
+  .hpl-book2 .hpl-avatar {
+    position: relative; width: 132px; height: 132px; border-radius: 50%; overflow: hidden; flex: none;
+    background: var(--hpl-blue-tint); color: var(--hpl-blue);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--hpl-head); font-weight: 800; font-size: 40px;
+    border: 4px solid var(--hpl-white); box-shadow: 0 0 0 2px var(--hpl-blue);
+  }
+  .hpl-book2 .hpl-avatar img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .hpl-book2 .hpl-coach-name { font-size: 22px; }
+  .hpl-book2 .hpl-coach-role { font-family: var(--hpl-head); font-weight: 700; font-size: 14px; color: var(--hpl-blue); margin-top: 4px; letter-spacing: .02em; }
+  .hpl-book2 .hpl-coach-bio { font-size: 17px; margin-top: 10px; }
+
+  /* FAQ accordion */
+  .hpl-book2 .hpl-faq { margin-top: 28px; border-top: 1px solid var(--hpl-line); }
+  .hpl-book2 .hpl-faq-item { border-bottom: 1px solid var(--hpl-line); }
+  .hpl-book2 .hpl-faq-q {
+    width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    min-height: 64px; padding: 18px 0; margin: 0;
+    background: none; border: 0; cursor: pointer; text-align: left;
+    font-family: var(--hpl-head); font-weight: 700; font-size: 18px; line-height: 1.3; color: var(--hpl-ink);
+    -webkit-tap-highlight-color: transparent;
+  }
+  .hpl-book2 .hpl-faq-q:focus-visible { outline: 3px solid var(--hpl-blue); outline-offset: 2px; border-radius: 4px; }
+  .hpl-book2 .hpl-faq-icon {
+    flex: none; width: 32px; height: 32px; border-radius: 50%;
+    background: var(--hpl-blue-tint); color: var(--hpl-blue);
+    display: flex; align-items: center; justify-content: center;
+    transition: transform .25s ease, background .25s ease, color .25s ease;
+  }
+  .hpl-book2 .hpl-faq-icon svg { width: 16px; height: 16px; }
+  .hpl-book2 .hpl-faq-q[aria-expanded="true"] .hpl-faq-icon { transform: rotate(45deg); background: var(--hpl-blue); color: var(--hpl-white); }
+  .hpl-book2 .hpl-faq-panel { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .3s ease; }
+  .hpl-book2 .hpl-faq-panel.is-open { grid-template-rows: 1fr; }
+  .hpl-book2 .hpl-faq-inner { overflow: hidden; }
+  .hpl-book2 .hpl-faq-body { padding: 0 0 22px; }
+  .hpl-book2 .hpl-faq-body p { font-size: 17px; }
+
+  /* Final CTA */
+  .hpl-book2 .hpl-cta { text-align: center; }
+  .hpl-book2 .hpl-cta p { margin-top: 12px; }
+  .hpl-book2 .hpl-cta .hpl-btn { margin-top: 24px; }
+
+  @media (min-width: 640px) {
+    .hpl-book2 h2 { font-size: 34px; }
+    .hpl-book2 .hpl-section { padding: 80px 0; }
+    .hpl-book2 .hpl-btn { width: auto; min-width: 300px; }
+    .hpl-book2 .hpl-faq-q { font-size: 19px; }
+    .hpl-book2 .hpl-coach { grid-template-columns: 150px 1fr; justify-items: start; text-align: left; gap: 26px; padding: 30px; align-items: center; }
+    .hpl-book2 .hpl-avatar { width: 150px; height: 150px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hpl-book2 .hpl-btn, .hpl-book2 .hpl-faq-icon, .hpl-book2 .hpl-faq-panel, .hpl-book2 .hpl-video-icon { transition: none; }
+  }
+</style>
+
+<div class="hpl-book2">
+
+  <!-- 1. What to expect -->
+  <section class="hpl-section">
+    <div class="hpl-wrap">
+      <span class="hpl-eyebrow">The call</span>
+      <h2>What to expect on the call</h2>
+      <ul class="hpl-expect">
+        <li>
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-1.2 14.2-4-4 1.4-1.4 2.6 2.6 5.6-5.6 1.4 1.4-7 7z"/></svg>
+          <span>We'll talk about where your mental game is right now and what's holding you back on the mound</span>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-1.2 14.2-4-4 1.4-1.4 2.6 2.6 5.6-5.6 1.4 1.4-7 7z"/></svg>
+          <span>You'll learn how the Next Pitch Protocol works</span>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-1.2 14.2-4-4 1.4-1.4 2.6 2.6 5.6-5.6 1.4 1.4-7 7z"/></svg>
+          <span>We'll decide together if it's the right fit — no pressure either way</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 2. Testimonials -->
+  <section class="hpl-section hpl-section--gray">
+    <div class="hpl-wrap">
+      <span class="hpl-eyebrow">Results</span>
+      <h2>Hear it from pitchers who've done it</h2>
+      <div class="hpl-testimonials">
+        <figure>
+          <div class="hpl-video" data-hpl-yt="juul4SibveI">
+            <button type="button" class="hpl-video-play" aria-label="Play video: 2026 D2 All Region Pitcher">
+              <img src="https://i.ytimg.com/vi/juul4SibveI/hqdefault.jpg" alt="" loading="lazy">
+              <span class="hpl-video-icon"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg></span>
+            </button>
+          </div>
+          <figcaption class="hpl-video-caption">2026 D2 All Region Pitcher</figcaption>
+        </figure>
+        <figure>
+          <div class="hpl-video" data-hpl-yt="5ZS1p38IEpY">
+            <button type="button" class="hpl-video-play" aria-label="Play video: JUCO pitcher, turned his season around and earned a D2 scholarship">
+              <img src="https://i.ytimg.com/vi/5ZS1p38IEpY/hqdefault.jpg" alt="" loading="lazy">
+              <span class="hpl-video-icon"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg></span>
+            </button>
+          </div>
+          <figcaption class="hpl-video-caption">JUCO pitcher, turned his season around and earned a D2 scholarship</figcaption>
+        </figure>
+        <figure>
+          <div class="hpl-video" data-hpl-yt="V7yj3SGqRdA">
+            <button type="button" class="hpl-video-play" aria-label="Play video: High school pitcher using mental training to prepare for college baseball">
+              <img src="https://i.ytimg.com/vi/V7yj3SGqRdA/hqdefault.jpg" alt="" loading="lazy">
+              <span class="hpl-video-icon"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg></span>
+            </button>
+          </div>
+          <figcaption class="hpl-video-caption">High school pitcher using mental training to prepare for college baseball</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Who you'll be talking to -->
+  <section class="hpl-section">
+    <div class="hpl-wrap">
+      <span class="hpl-eyebrow">Your coach</span>
+      <h2>Who you'll be talking to</h2>
+      <div class="hpl-coach">
+        <div class="hpl-avatar">
+          JH
+          <!-- HEADSHOT: paste your image URL into src="" below. Until then, the "JH" initials show. -->
+          <img src="" alt="Justin Hirschberg" data-hpl-headshot>
+        </div>
+        <div>
+          <h3 class="hpl-coach-name">Justin Hirschberg</h3>
+          <p class="hpl-coach-role">Founder, Hirschberg Performance Lab</p>
+          <p class="hpl-coach-bio">Former pitcher at Occidental College. Master's in Sports Psychology from Barry University. Founder of Hirschberg Performance Lab.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. FAQ -->
+  <section class="hpl-section hpl-section--gray">
+    <div class="hpl-wrap">
+      <span class="hpl-eyebrow">Questions</span>
+      <h2>Frequently asked questions</h2>
+      <div class="hpl-faq">
+        <div class="hpl-faq-item">
+          <button type="button" class="hpl-faq-q" aria-expanded="false" aria-controls="hpl-faq-1">
+            <span>Is the call free?</span>
+            <span class="hpl-faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span>
+          </button>
+          <div class="hpl-faq-panel" id="hpl-faq-1" role="region"><div class="hpl-faq-inner"><div class="hpl-faq-body">
+            <p>Yes.</p>
+          </div></div></div>
+        </div>
+        <div class="hpl-faq-item">
+          <button type="button" class="hpl-faq-q" aria-expanded="false" aria-controls="hpl-faq-2">
+            <span>Is this a sales call?</span>
+            <span class="hpl-faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span>
+          </button>
+          <div class="hpl-faq-panel" id="hpl-faq-2" role="region"><div class="hpl-faq-inner"><div class="hpl-faq-body">
+            <p>It's a conversation to see if we're a fit. If we are, I'll explain how the program works. If not, you'll still leave with something useful.</p>
+          </div></div></div>
+        </div>
+        <div class="hpl-faq-item">
+          <button type="button" class="hpl-faq-q" aria-expanded="false" aria-controls="hpl-faq-3">
+            <span>What if our schedule changes?</span>
+            <span class="hpl-faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span>
+          </button>
+          <div class="hpl-faq-panel" id="hpl-faq-3" role="region"><div class="hpl-faq-inner"><div class="hpl-faq-body">
+            <p>Use the reschedule link in your confirmation email or text.</p>
+          </div></div></div>
+        </div>
+        <div class="hpl-faq-item">
+          <button type="button" class="hpl-faq-q" aria-expanded="false" aria-controls="hpl-faq-4">
+            <span>Is everything remote?</span>
+            <span class="hpl-faq-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span>
+          </button>
+          <div class="hpl-faq-panel" id="hpl-faq-4" role="region"><div class="hpl-faq-inner"><div class="hpl-faq-body">
+            <p>Yes. Calls happen over Zoom, so you can join from anywhere.</p>
+          </div></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Final CTA -->
+  <section class="hpl-section hpl-cta">
+    <div class="hpl-wrap">
+      <h2>Ready to get started?</h2>
+      <p>Grab a time when both parent and athlete can be there.</p>
+      <button type="button" class="hpl-btn" data-hpl-scroll="calendar-section">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+        Schedule your call
+      </button>
+    </div>
+  </section>
+
+</div>
+
+<script>
+(function () {
+  var root = document.currentScript && document.currentScript.previousElementSibling;
+  if (!root || !root.classList || !root.classList.contains('hpl-book2')) root = document.querySelector('.hpl-book2');
+  if (!root || root.getAttribute('data-hpl-init')) return;
+  root.setAttribute('data-hpl-init', '1');
+
+  // Click-to-load YouTube: iframe is only created on click
+  root.querySelectorAll('[data-hpl-yt]').forEach(function (box) {
+    var btn = box.querySelector('.hpl-video-play');
+    if (!btn) return;
+    var thumb = btn.querySelector('img');
+    if (thumb) {
+      var hide = function () { thumb.style.visibility = 'hidden'; };
+      thumb.addEventListener('error', hide);
+      if (thumb.complete && thumb.naturalWidth === 0 && thumb.getAttribute('src')) hide();
+    }
+    btn.addEventListener('click', function () {
+      var id = box.getAttribute('data-hpl-yt');
+      var f = document.createElement('iframe');
+      f.src = 'https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1&rel=0&modestbranding=1&playsinline=1';
+      f.title = btn.getAttribute('aria-label') || 'Testimonial video';
+      f.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+      f.allowFullscreen = true;
+      box.innerHTML = '';
+      box.appendChild(f);
+    });
+  });
+
+  // Headshot: fall back to initials if no URL or the image fails
+  root.querySelectorAll('img[data-hpl-headshot]').forEach(function (img) {
+    var src = (img.getAttribute('src') || '').trim();
+    if (!src) { img.remove(); return; }
+    img.addEventListener('error', function () { img.remove(); });
+  });
+
+  // FAQ accordion (collapsed by default)
+  root.querySelectorAll('.hpl-faq-q').forEach(function (q) {
+    q.addEventListener('click', function () {
+      var panel = document.getElementById(q.getAttribute('aria-controls'));
+      var open = q.getAttribute('aria-expanded') === 'true';
+      q.setAttribute('aria-expanded', open ? 'false' : 'true');
+      if (panel) panel.classList.toggle('is-open', !open);
+    });
+  });
+
+  // Smooth scroll back up to the GHL calendar element
+  root.querySelectorAll('[data-hpl-scroll]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var target = document.getElementById(btn.getAttribute('data-hpl-scroll'));
+      if (!target) return;
+      var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var top = target.getBoundingClientRect().top + window.pageYOffset - 16;
+      window.scrollTo({ top: top, behavior: reduce ? 'auto' : 'smooth' });
+    });
+  });
+})();
+</script>

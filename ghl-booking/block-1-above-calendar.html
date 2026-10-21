@@ -1,0 +1,115 @@
+<!-- HPL Booking Page: BLOCK 1 (above the calendar) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+
+<style>
+  .hpl-book {
+    --hpl-blue: #0C71C2;
+    --hpl-blue-dark: #095A9B;
+    --hpl-blue-tint: #E7F1FA;
+    --hpl-ink: #111111;
+    --hpl-body: #33363B;
+    --hpl-muted: #5E636B;
+    --hpl-line: #E2E4E8;
+    --hpl-white: #FFFFFF;
+    --hpl-head: "Roboto Slab", Georgia, "Times New Roman", serif;
+    --hpl-text: "Source Serif 4", Georgia, "Times New Roman", serif;
+
+    background: var(--hpl-white);
+    color: var(--hpl-body);
+    font-family: var(--hpl-text);
+    font-size: 18px;
+    line-height: 1.6;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-size-adjust: 100%;
+  }
+  .hpl-book *, .hpl-book *::before, .hpl-book *::after { box-sizing: border-box; }
+  .hpl-book h1, .hpl-book p { margin: 0; padding: 0; }
+
+  .hpl-book .hpl-wrap { width: 100%; max-width: 760px; margin: 0 auto; padding: 0 20px; }
+  .hpl-book .hpl-top { padding: 40px 0 20px; }
+
+  .hpl-book .hpl-eyebrow {
+    display: inline-block;
+    font-family: var(--hpl-head);
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--hpl-blue);
+    margin-bottom: 12px;
+  }
+  .hpl-book h1 {
+    font-family: var(--hpl-head);
+    font-weight: 800;
+    font-size: 28px;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    color: var(--hpl-ink);
+    text-transform: uppercase;
+  }
+  .hpl-book .hpl-h1-accent { color: var(--hpl-blue); }
+
+  /* Alert */
+  .hpl-book .hpl-alert {
+    display: flex; align-items: flex-start; gap: 12px;
+    margin: 26px auto 0; max-width: 620px;
+    padding: 16px 18px;
+    background: var(--hpl-blue-tint);
+    border: 2px solid var(--hpl-blue);
+    border-left-width: 8px;
+    border-radius: 12px;
+    text-align: left;
+  }
+  .hpl-book .hpl-alert svg { flex: none; width: 26px; height: 26px; color: var(--hpl-blue); margin-top: 1px; }
+  .hpl-book .hpl-alert p {
+    font-family: var(--hpl-head);
+    font-weight: 800;
+    font-size: 17px;
+    line-height: 1.35;
+    color: var(--hpl-ink);
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+  }
+  .hpl-book .hpl-alert strong { color: var(--hpl-blue-dark); }
+
+  .hpl-book .hpl-pick {
+    margin-top: 28px;
+    font-size: 16px;
+    font-style: italic;
+    color: var(--hpl-muted);
+  }
+  .hpl-book .hpl-pick-arrow { display: block; margin: 6px auto 0; width: 20px; height: 20px; color: var(--hpl-blue); }
+
+  @media (min-width: 640px) {
+    .hpl-book .hpl-top { padding: 64px 0 24px; }
+    .hpl-book h1 { font-size: 40px; }
+    .hpl-book .hpl-alert { padding: 18px 22px; }
+    .hpl-book .hpl-alert p { font-size: 19px; }
+    .hpl-book .hpl-pick { font-size: 17px; }
+  }
+</style>
+
+<div class="hpl-book">
+  <section class="hpl-top">
+    <div class="hpl-wrap">
+      <span class="hpl-eyebrow">One last step</span>
+      <h1>The next step is to schedule your <span class="hpl-h1-accent">consultation call</span> below!</h1>
+
+      <div class="hpl-alert" role="note">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2 1 21h22L12 2zm0 4.2L19.5 19h-15L12 6.2zM11 10v5h2v-5h-2zm0 6v2h2v-2h-2z"/></svg>
+        <p><strong>Important:</strong> A parent and an athlete must be present on the call.</p>
+      </div>
+
+      <p class="hpl-pick">
+        Pick a time when both of you can be there.
+        <svg class="hpl-pick-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+      </p>
+    </div>
+  </section>
+</div>
