@@ -1,0 +1,647 @@
+<title>HPL Booking Page Code</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  /* Layout: one narrow column of steps; each block is a card with a full-width copy button */
+  :root {
+    --bg: #F4F5F7; --card: #FFFFFF; --ink: #111111; --body: #33363B; --muted: #5E636B;
+    --line: #E2E4E8; --accent: #0C71C2; --accent-dark: #095A9B; --accent-tint: #E7F1FA;
+    --code-bg: #F7F8FA; --ok: #1E7B45;
+    --head: "Roboto Slab", Georgia, serif;
+    --text: "Source Serif 4", Georgia, serif;
+    --mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+    --bg: #0F1216; --card: #171B21; --ink: #F2F4F7; --body: #C9CED6; --muted: #9AA2AD;
+    --line: #2A3038; --accent: #4DA3E8; --accent-dark: #2F86CC; --accent-tint: #13283B;
+    --code-bg: #12161B; --ok: #5CC98A; color-scheme: dark } }
+  :root[data-theme="dark"] {
+    --bg: #0F1216; --card: #171B21; --ink: #F2F4F7; --body: #C9CED6; --muted: #9AA2AD;
+    --line: #2A3038; --accent: #4DA3E8; --accent-dark: #2F86CC; --accent-tint: #13283B;
+    --code-bg: #12161B; --ok: #5CC98A; color-scheme: dark }
+
+  body { background: var(--bg); color: var(--body); font-family: var(--text); font-size: 17px; line-height: 1.55; }
+  .wrap { max-width: 760px; margin: 0 auto; padding-block: 36px 64px;
+    padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+    display: grid; gap: 28px; }
+  h1, h2 { font-family: var(--head); color: var(--ink); line-height: 1.15; margin: 0; text-wrap: balance; }
+  h1 { font-size: 30px; font-weight: 800; }
+  h2 { font-size: 21px; font-weight: 700; }
+  p { margin: 0; }
+  .eyebrow { font-family: var(--head); font-weight: 700; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); }
+  header { display: grid; gap: 10px; }
+
+  .steps { margin: 0; padding: 18px 20px 18px 40px; background: var(--card); border: 1px solid var(--line); border-radius: 12px; display: grid; gap: 8px; }
+  .steps li { padding-left: 4px; }
+  .steps strong { color: var(--ink); }
+  code.inline { font-family: var(--mono); font-size: 14px; background: var(--accent-tint); color: var(--ink); padding: 1px 6px; border-radius: 4px; }
+
+  .block { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 20px; display: grid; gap: 14px; min-width: 0; }
+  .block-head { display: grid; gap: 4px; }
+  .where { font-size: 15px; color: var(--muted); }
+  .copy {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    width: 100%; min-height: 56px; padding: 14px 20px;
+    background: var(--accent); color: #FFFFFF; border: 0; border-radius: 10px; cursor: pointer;
+    font-family: var(--head); font-weight: 700; font-size: 18px; letter-spacing: .02em;
+    box-shadow: 0 2px 0 var(--accent-dark); transition: background .15s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .copy:hover { background: var(--accent-dark); }
+  .copy:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+  .copy svg { width: 20px; height: 20px; flex: none; }
+  .copy.done { background: var(--ok); box-shadow: none; }
+  .status { font-size: 14px; color: var(--muted); min-height: 1.4em; }
+  .status.warn { color: var(--ink); }
+
+  details summary { cursor: pointer; font-size: 15px; color: var(--accent); font-family: var(--head); font-weight: 700; }
+  textarea {
+    display: block; width: 100%; max-width: 100%; height: 260px; margin-top: 10px; resize: vertical;
+    font-family: var(--mono); font-size: 12.5px; line-height: 1.5; color: var(--body);
+    background: var(--code-bg); border: 1px solid var(--line); border-radius: 8px; padding: 12px;
+    white-space: pre; overflow: auto;
+  }
+  .note { font-size: 15px; color: var(--muted); background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; display: grid; gap: 8px; }
+  .note strong { color: var(--ink); }
+  @media (min-width: 640px) { h1 { font-size: 36px; } .block { padding: 26px; } }
+  @media (prefers-reduced-motion: reduce) { .copy { transition: none; } }
+</style>
+
+<main class="wrap">
+  <header>
+    <span class="eyebrow">Booking page · GoHighLevel</span>
+    <h1>Copy &amp; paste code blocks</h1>
+    <p>Two Custom Code elements, one above the calendar and one below it. Tap a button to copy the whole block, then paste it into GHL.</p>
+  </header>
+
+  <ol class="steps">
+    <li>In the GHL page builder, add a <strong>Code</strong> element (Custom HTML/Javascript) where the block goes.</li>
+    <li>Click <strong>Open Code Editor</strong>, then select everything already in it and delete it.</li>
+    <li>Tap the Copy button below, paste into the editor, and click <strong>Save</strong>.</li>
+    <li>Set the calendar element's ID to <code class="inline">calendar-section</code> so the bottom button can scroll to it.</li>
+  </ol>
+
+  <section class="block" aria-labelledby="h-b1">
+    <div class="block-head">
+      <span class="eyebrow">Block 1</span>
+      <h2 id="h-b1">Above the calendar</h2>
+      <p class="where">Headline, the parent-and-athlete alert, and the "pick a time" line. 115 lines.</p>
+    </div>
+    <button type="button" class="copy" data-target="code-b1">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+      <span>Copy Block 1</span>
+    </button>
+    <p class="status" role="status" aria-live="polite"></p>
+    <details>
+      <summary>Show the code</summary>
+      <textarea id="code-b1" readonly spellcheck="false" aria-label="Block 1 code">&lt;!-- HPL Booking Page: BLOCK 1 (above the calendar) --&gt;
+&lt;link rel="preconnect" href="https://fonts.googleapis.com"&gt;
+&lt;link rel="preconnect" href="https://fonts.gstatic.com" crossorigin&gt;
+&lt;link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@700;800&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&amp;display=swap" rel="stylesheet"&gt;
+
+&lt;style&gt;
+  .hpl-book {
+    --hpl-blue: #0C71C2;
+    --hpl-blue-dark: #095A9B;
+    --hpl-blue-tint: #E7F1FA;
+    --hpl-ink: #111111;
+    --hpl-body: #33363B;
+    --hpl-muted: #5E636B;
+    --hpl-line: #E2E4E8;
+    --hpl-white: #FFFFFF;
+    --hpl-head: "Roboto Slab", Georgia, "Times New Roman", serif;
+    --hpl-text: "Source Serif 4", Georgia, "Times New Roman", serif;
+
+    background: var(--hpl-white);
+    color: var(--hpl-body);
+    font-family: var(--hpl-text);
+    font-size: 18px;
+    line-height: 1.6;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-size-adjust: 100%;
+  }
+  .hpl-book *, .hpl-book *::before, .hpl-book *::after { box-sizing: border-box; }
+  .hpl-book h1, .hpl-book p { margin: 0; padding: 0; }
+
+  .hpl-book .hpl-wrap { width: 100%; max-width: 760px; margin: 0 auto; padding: 0 20px; }
+  .hpl-book .hpl-top { padding: 40px 0 20px; }
+
+  .hpl-book .hpl-eyebrow {
+    display: inline-block;
+    font-family: var(--hpl-head);
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--hpl-blue);
+    margin-bottom: 12px;
+  }
+  .hpl-book h1 {
+    font-family: var(--hpl-head);
+    font-weight: 800;
+    font-size: 28px;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    color: var(--hpl-ink);
+    text-transform: uppercase;
+  }
+  .hpl-book .hpl-h1-accent { color: var(--hpl-blue); }
+
+  /* Alert */
+  .hpl-book .hpl-alert {
+    display: flex; align-items: flex-start; gap: 12px;
+    margin: 26px auto 0; max-width: 620px;
+    padding: 16px 18px;
+    background: var(--hpl-blue-tint);
+    border: 2px solid var(--hpl-blue);
+    border-left-width: 8px;
+    border-radius: 12px;
+    text-align: left;
+  }
+  .hpl-book .hpl-alert svg { flex: none; width: 26px; height: 26px; color: var(--hpl-blue); margin-top: 1px; }
+  .hpl-book .hpl-alert p {
+    font-family: var(--hpl-head);
+    font-weight: 800;
+    font-size: 17px;
+    line-height: 1.35;
+    color: var(--hpl-ink);
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+  }
+  .hpl-book .hpl-alert strong { color: var(--hpl-blue-dark); }
+
+  .hpl-book .hpl-pick {
+    margin-top: 28px;
+    font-size: 16px;
+    font-style: italic;
+    color: var(--hpl-muted);
+  }
+  .hpl-book .hpl-pick-arrow { display: block; margin: 6px auto 0; width: 20px; height: 20px; color: var(--hpl-blue); }
+
+  @media (min-width: 640px) {
+    .hpl-book .hpl-top { padding: 64px 0 24px; }
+    .hpl-book h1 { font-size: 40px; }
+    .hpl-book .hpl-alert { padding: 18px 22px; }
+    .hpl-book .hpl-alert p { font-size: 19px; }
+    .hpl-book .hpl-pick { font-size: 17px; }
+  }
+&lt;/style&gt;
+
+&lt;div class="hpl-book"&gt;
+  &lt;section class="hpl-top"&gt;
+    &lt;div class="hpl-wrap"&gt;
+      &lt;span class="hpl-eyebrow"&gt;One last step&lt;/span&gt;
+      &lt;h1&gt;The next step is to schedule your &lt;span class="hpl-h1-accent"&gt;consultation call&lt;/span&gt; below!&lt;/h1&gt;
+
+      &lt;div class="hpl-alert" role="note"&gt;
+        &lt;svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"&gt;&lt;path d="M12 2 1 21h22L12 2zm0 4.2L19.5 19h-15L12 6.2zM11 10v5h2v-5h-2zm0 6v2h2v-2h-2z"/&gt;&lt;/svg&gt;
+        &lt;p&gt;&lt;strong&gt;Important:&lt;/strong&gt; A parent and an athlete must be present on the call.&lt;/p&gt;
+      &lt;/div&gt;
+
+      &lt;p class="hpl-pick"&gt;
+        Pick a time when both of you can be there.
+        &lt;svg class="hpl-pick-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;&lt;path d="M12 5v14M5 12l7 7 7-7"/&gt;&lt;/svg&gt;
+      &lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+&lt;/div&gt;
+</textarea>
+    </details>
+  </section>
+
+  <section class="block" aria-labelledby="h-b2">
+    <div class="block-head">
+      <span class="eyebrow">Block 2</span>
+      <h2 id="h-b2">Below the calendar</h2>
+      <p class="where">What to expect, 3 testimonial videos, your bio, FAQ, and the "Schedule your call" button. 377 lines.</p>
+    </div>
+    <button type="button" class="copy" data-target="code-b2">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+      <span>Copy Block 2</span>
+    </button>
+    <p class="status" role="status" aria-live="polite"></p>
+    <details>
+      <summary>Show the code</summary>
+      <textarea id="code-b2" readonly spellcheck="false" aria-label="Block 2 code">&lt;!-- HPL Booking Page: BLOCK 2 (below the calendar) --&gt;
+&lt;link rel="preconnect" href="https://fonts.googleapis.com"&gt;
+&lt;link rel="preconnect" href="https://fonts.gstatic.com" crossorigin&gt;
+&lt;link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@700;800&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&amp;display=swap" rel="stylesheet"&gt;
+
+&lt;style&gt;
+  .hpl-book2 {
+    --hpl-blue: #0C71C2;
+    --hpl-blue-dark: #095A9B;
+    --hpl-blue-tint: #E7F1FA;
+    --hpl-ink: #111111;
+    --hpl-body: #33363B;
+    --hpl-muted: #5E636B;
+    --hpl-gray: #F4F5F7;
+    --hpl-line: #E2E4E8;
+    --hpl-white: #FFFFFF;
+    --hpl-head: "Roboto Slab", Georgia, "Times New Roman", serif;
+    --hpl-text: "Source Serif 4", Georgia, "Times New Roman", serif;
+
+    background: var(--hpl-white);
+    color: var(--hpl-body);
+    font-family: var(--hpl-text);
+    font-size: 18px;
+    line-height: 1.6;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    text-align: left;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-size-adjust: 100%;
+  }
+  .hpl-book2 *, .hpl-book2 *::before, .hpl-book2 *::after { box-sizing: border-box; }
+  .hpl-book2 h2, .hpl-book2 h3, .hpl-book2 p, .hpl-book2 ul, .hpl-book2 li, .hpl-book2 figure, .hpl-book2 figcaption {
+    margin: 0; padding: 0;
+  }
+  .hpl-book2 h2, .hpl-book2 h3 {
+    font-family: var(--hpl-head);
+    color: var(--hpl-ink);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    text-transform: none;
+  }
+  .hpl-book2 h2 { font-size: 28px; font-weight: 800; }
+  .hpl-book2 h3 { font-size: 20px; font-weight: 700; }
+  .hpl-book2 p { font-size: 18px; color: var(--hpl-body); }
+  .hpl-book2 img { max-width: 100%; height: auto; display: block; border: 0; }
+
+  .hpl-book2 .hpl-wrap { width: 100%; max-width: 760px; margin: 0 auto; padding: 0 20px; }
+  .hpl-book2 .hpl-section { padding: 56px 0; }
+  .hpl-book2 .hpl-section--gray { background: var(--hpl-gray); }
+  .hpl-book2 .hpl-eyebrow {
+    display: inline-block;
+    font-family: var(--hpl-head);
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--hpl-blue);
+    margin-bottom: 10px;
+  }
+
+  /* Buttons */
+  .hpl-book2 .hpl-btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    min-height: 52px; padding: 14px 22px; width: 100%;
+    background: var(--hpl-blue); color: var(--hpl-white);
+    font-family: var(--hpl-head); font-weight: 700; font-size: 17px; line-height: 1.2;
+    text-decoration: none; text-align: center; text-transform: uppercase; letter-spacing: 0.02em;
+    border: 0; border-radius: 10px; cursor: pointer;
+    box-shadow: 0 2px 0 var(--hpl-blue-dark);
+    transition: background .15s ease, transform .15s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .hpl-book2 .hpl-btn:hover { background: var(--hpl-blue-dark); color: var(--hpl-white); }
+  .hpl-book2 .hpl-btn:active { transform: translateY(1px); }
+  .hpl-book2 .hpl-btn:focus-visible { outline: 3px solid var(--hpl-ink); outline-offset: 3px; }
+  .hpl-book2 .hpl-btn svg { width: 18px; height: 18px; flex: none; }
+
+  /* Expect */
+  .hpl-book2 .hpl-expect { list-style: none; margin-top: 26px; display: grid; gap: 18px; }
+  .hpl-book2 .hpl-expect li { display: grid; grid-template-columns: 28px 1fr; gap: 14px; font-size: 18px; color: var(--hpl-body); }
+  .hpl-book2 .hpl-expect svg { width: 28px; height: 28px; color: var(--hpl-blue); margin-top: 1px; }
+
+  /* Testimonials (click-to-load) */
+  .hpl-book2 .hpl-testimonials { display: grid; gap: 28px; margin-top: 28px; }
+  .hpl-book2 .hpl-video {
+    position: relative; width: 100%; aspect-ratio: 16 / 9;
+    background: var(--hpl-ink); border-radius: 14px; overflow: hidden;
+    box-shadow: 0 10px 30px rgba(17,17,17,.12);
+  }
+  @supports not (aspect-ratio: 16 / 9) {
+    .hpl-book2 .hpl-video { height: 0; padding-top: 56.25%; }
+  }
+  .hpl-book2 .hpl-video-play {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    padding: 0; margin: 0; border: 0; background: var(--hpl-ink); cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .hpl-book2 .hpl-video-play img { width: 100%; height: 100%; object-fit: cover; opacity: .9; transition: opacity .2s ease; }
+  .hpl-book2 .hpl-video-play:hover img { opacity: 1; }
+  .hpl-book2 .hpl-video-icon {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 72px; height: 72px; border-radius: 50%;
+    background: var(--hpl-blue); color: var(--hpl-white);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 6px 20px rgba(0,0,0,.35);
+    transition: transform .15s ease, background .15s ease;
+  }
+  .hpl-book2 .hpl-video-icon svg { width: 30px; height: 30px; margin-left: 4px; }
+  .hpl-book2 .hpl-video-play:hover .hpl-video-icon { background: var(--hpl-blue-dark); transform: translate(-50%, -50%) scale(1.06); }
+  .hpl-book2 .hpl-video-play:focus-visible { outline: 3px solid var(--hpl-blue); outline-offset: -3px; }
+  .hpl-book2 .hpl-video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .hpl-book2 .hpl-video-caption {
+    font-family: var(--hpl-head); font-weight: 700; font-size: 15px; line-height: 1.35; color: var(--hpl-ink);
+    margin-top: 12px; text-align: center;
+  }
+
+  /* Coach */
+  .hpl-book2 .hpl-coach {
+    margin-top: 26px; display: grid; gap: 18px; justify-items: center; text-align: center;
+    background: var(--hpl-white); border: 1px solid var(--hpl-line); border-radius: 14px; padding: 26px 22px;
+  }
+  .hpl-book2 .hpl-avatar {
+    position: relative; width: 132px; height: 132px; border-radius: 50%; overflow: hidden; flex: none;
+    background: var(--hpl-blue-tint); color: var(--hpl-blue);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--hpl-head); font-weight: 800; font-size: 40px;
+    border: 4px solid var(--hpl-white); box-shadow: 0 0 0 2px var(--hpl-blue);
+  }
+  .hpl-book2 .hpl-avatar img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .hpl-book2 .hpl-coach-name { font-size: 22px; }
+  .hpl-book2 .hpl-coach-role { font-family: var(--hpl-head); font-weight: 700; font-size: 14px; color: var(--hpl-blue); margin-top: 4px; letter-spacing: .02em; }
+  .hpl-book2 .hpl-coach-bio { font-size: 17px; margin-top: 10px; }
+
+  /* FAQ accordion */
+  .hpl-book2 .hpl-faq { margin-top: 28px; border-top: 1px solid var(--hpl-line); }
+  .hpl-book2 .hpl-faq-item { border-bottom: 1px solid var(--hpl-line); }
+  .hpl-book2 .hpl-faq-q {
+    width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    min-height: 64px; padding: 18px 0; margin: 0;
+    background: none; border: 0; cursor: pointer; text-align: left;
+    font-family: var(--hpl-head); font-weight: 700; font-size: 18px; line-height: 1.3; color: var(--hpl-ink);
+    -webkit-tap-highlight-color: transparent;
+  }
+  .hpl-book2 .hpl-faq-q:focus-visible { outline: 3px solid var(--hpl-blue); outline-offset: 2px; border-radius: 4px; }
+  .hpl-book2 .hpl-faq-icon {
+    flex: none; width: 32px; height: 32px; border-radius: 50%;
+    background: var(--hpl-blue-tint); color: var(--hpl-blue);
+    display: flex; align-items: center; justify-content: center;
+    transition: transform .25s ease, background .25s ease, color .25s ease;
+  }
+  .hpl-book2 .hpl-faq-icon svg { width: 16px; height: 16px; }
+  .hpl-book2 .hpl-faq-q[aria-expanded="true"] .hpl-faq-icon { transform: rotate(45deg); background: var(--hpl-blue); color: var(--hpl-white); }
+  .hpl-book2 .hpl-faq-panel { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .3s ease; }
+  .hpl-book2 .hpl-faq-panel.is-open { grid-template-rows: 1fr; }
+  .hpl-book2 .hpl-faq-inner { overflow: hidden; }
+  .hpl-book2 .hpl-faq-body { padding: 0 0 22px; }
+  .hpl-book2 .hpl-faq-body p { font-size: 17px; }
+
+  /* Final CTA */
+  .hpl-book2 .hpl-cta { text-align: center; }
+  .hpl-book2 .hpl-cta p { margin-top: 12px; }
+  .hpl-book2 .hpl-cta .hpl-btn { margin-top: 24px; }
+
+  @media (min-width: 640px) {
+    .hpl-book2 h2 { font-size: 34px; }
+    .hpl-book2 .hpl-section { padding: 80px 0; }
+    .hpl-book2 .hpl-btn { width: auto; min-width: 300px; }
+    .hpl-book2 .hpl-faq-q { font-size: 19px; }
+    .hpl-book2 .hpl-coach { grid-template-columns: 150px 1fr; justify-items: start; text-align: left; gap: 26px; padding: 30px; align-items: center; }
+    .hpl-book2 .hpl-avatar { width: 150px; height: 150px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hpl-book2 .hpl-btn, .hpl-book2 .hpl-faq-icon, .hpl-book2 .hpl-faq-panel, .hpl-book2 .hpl-video-icon { transition: none; }
+  }
+&lt;/style&gt;
+
+&lt;div class="hpl-book2"&gt;
+
+  &lt;!-- 1. What to expect --&gt;
+  &lt;section class="hpl-section"&gt;
+    &lt;div class="hpl-wrap"&gt;
+      &lt;span class="hpl-eyebrow"&gt;The call&lt;/span&gt;
+      &lt;h2&gt;What to expect on the call&lt;/h2&gt;
+      &lt;ul class="hpl-expect"&gt;
+        &lt;li&gt;
+          &lt;svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"&gt;&lt;path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-1.2 14.2-4-4 1.4-1.4 2.6 2.6 5.6-5.6 1.4 1.4-7 7z"/&gt;&lt;/svg&gt;
+          &lt;span&gt;We'll talk about where your mental game is right now and what's holding you back on the mound&lt;/span&gt;
+        &lt;/li&gt;
+        &lt;li&gt;
+          &lt;svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"&gt;&lt;path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-1.2 14.2-4-4 1.4-1.4 2.6 2.6 5.6-5.6 1.4 1.4-7 7z"/&gt;&lt;/svg&gt;
+          &lt;span&gt;You'll learn how the Next Pitch Protocol works&lt;/span&gt;
+        &lt;/li&gt;
+        &lt;li&gt;
+          &lt;svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"&gt;&lt;path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm-1.2 14.2-4-4 1.4-1.4 2.6 2.6 5.6-5.6 1.4 1.4-7 7z"/&gt;&lt;/svg&gt;
+          &lt;span&gt;We'll decide together if it's the right fit — no pressure either way&lt;/span&gt;
+        &lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;!-- 2. Testimonials --&gt;
+  &lt;section class="hpl-section hpl-section--gray"&gt;
+    &lt;div class="hpl-wrap"&gt;
+      &lt;span class="hpl-eyebrow"&gt;Results&lt;/span&gt;
+      &lt;h2&gt;Hear it from pitchers who've done it&lt;/h2&gt;
+      &lt;div class="hpl-testimonials"&gt;
+        &lt;figure&gt;
+          &lt;div class="hpl-video" data-hpl-yt="juul4SibveI"&gt;
+            &lt;button type="button" class="hpl-video-play" aria-label="Play video: 2026 D2 All Region Pitcher"&gt;
+              &lt;img src="https://i.ytimg.com/vi/juul4SibveI/hqdefault.jpg" alt="" loading="lazy"&gt;
+              &lt;span class="hpl-video-icon"&gt;&lt;svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"&gt;&lt;path d="M8 5.5v13l11-6.5z"/&gt;&lt;/svg&gt;&lt;/span&gt;
+            &lt;/button&gt;
+          &lt;/div&gt;
+          &lt;figcaption class="hpl-video-caption"&gt;2026 D2 All Region Pitcher&lt;/figcaption&gt;
+        &lt;/figure&gt;
+        &lt;figure&gt;
+          &lt;div class="hpl-video" data-hpl-yt="5ZS1p38IEpY"&gt;
+            &lt;button type="button" class="hpl-video-play" aria-label="Play video: JUCO pitcher, turned his season around and earned a D2 scholarship"&gt;
+              &lt;img src="https://i.ytimg.com/vi/5ZS1p38IEpY/hqdefault.jpg" alt="" loading="lazy"&gt;
+              &lt;span class="hpl-video-icon"&gt;&lt;svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"&gt;&lt;path d="M8 5.5v13l11-6.5z"/&gt;&lt;/svg&gt;&lt;/span&gt;
+            &lt;/button&gt;
+          &lt;/div&gt;
+          &lt;figcaption class="hpl-video-caption"&gt;JUCO pitcher, turned his season around and earned a D2 scholarship&lt;/figcaption&gt;
+        &lt;/figure&gt;
+        &lt;figure&gt;
+          &lt;div class="hpl-video" data-hpl-yt="V7yj3SGqRdA"&gt;
+            &lt;button type="button" class="hpl-video-play" aria-label="Play video: High school pitcher using mental training to prepare for college baseball"&gt;
+              &lt;img src="https://i.ytimg.com/vi/V7yj3SGqRdA/hqdefault.jpg" alt="" loading="lazy"&gt;
+              &lt;span class="hpl-video-icon"&gt;&lt;svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"&gt;&lt;path d="M8 5.5v13l11-6.5z"/&gt;&lt;/svg&gt;&lt;/span&gt;
+            &lt;/button&gt;
+          &lt;/div&gt;
+          &lt;figcaption class="hpl-video-caption"&gt;High school pitcher using mental training to prepare for college baseball&lt;/figcaption&gt;
+        &lt;/figure&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;!-- 3. Who you'll be talking to --&gt;
+  &lt;section class="hpl-section"&gt;
+    &lt;div class="hpl-wrap"&gt;
+      &lt;span class="hpl-eyebrow"&gt;Your coach&lt;/span&gt;
+      &lt;h2&gt;Who you'll be talking to&lt;/h2&gt;
+      &lt;div class="hpl-coach"&gt;
+        &lt;div class="hpl-avatar"&gt;
+          JH
+          &lt;!-- HEADSHOT: paste your image URL into src="" below. Until then, the "JH" initials show. --&gt;
+          &lt;img src="" alt="Justin Hirschberg" data-hpl-headshot&gt;
+        &lt;/div&gt;
+        &lt;div&gt;
+          &lt;h3 class="hpl-coach-name"&gt;Justin Hirschberg&lt;/h3&gt;
+          &lt;p class="hpl-coach-role"&gt;Founder, Hirschberg Performance Lab&lt;/p&gt;
+          &lt;p class="hpl-coach-bio"&gt;Former pitcher at Occidental College. Master's in Sports Psychology from Barry University. Founder of Hirschberg Performance Lab.&lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;!-- 4. FAQ --&gt;
+  &lt;section class="hpl-section hpl-section--gray"&gt;
+    &lt;div class="hpl-wrap"&gt;
+      &lt;span class="hpl-eyebrow"&gt;Questions&lt;/span&gt;
+      &lt;h2&gt;Frequently asked questions&lt;/h2&gt;
+      &lt;div class="hpl-faq"&gt;
+        &lt;div class="hpl-faq-item"&gt;
+          &lt;button type="button" class="hpl-faq-q" aria-expanded="false" aria-controls="hpl-faq-1"&gt;
+            &lt;span&gt;Is the call free?&lt;/span&gt;
+            &lt;span class="hpl-faq-icon"&gt;&lt;svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"&gt;&lt;path d="M12 5v14M5 12h14"/&gt;&lt;/svg&gt;&lt;/span&gt;
+          &lt;/button&gt;
+          &lt;div class="hpl-faq-panel" id="hpl-faq-1" role="region"&gt;&lt;div class="hpl-faq-inner"&gt;&lt;div class="hpl-faq-body"&gt;
+            &lt;p&gt;Yes.&lt;/p&gt;
+          &lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class="hpl-faq-item"&gt;
+          &lt;button type="button" class="hpl-faq-q" aria-expanded="false" aria-controls="hpl-faq-2"&gt;
+            &lt;span&gt;Is this a sales call?&lt;/span&gt;
+            &lt;span class="hpl-faq-icon"&gt;&lt;svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"&gt;&lt;path d="M12 5v14M5 12h14"/&gt;&lt;/svg&gt;&lt;/span&gt;
+          &lt;/button&gt;
+          &lt;div class="hpl-faq-panel" id="hpl-faq-2" role="region"&gt;&lt;div class="hpl-faq-inner"&gt;&lt;div class="hpl-faq-body"&gt;
+            &lt;p&gt;It's a conversation to see if we're a fit. If we are, I'll explain how the program works. If not, you'll still leave with something useful.&lt;/p&gt;
+          &lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class="hpl-faq-item"&gt;
+          &lt;button type="button" class="hpl-faq-q" aria-expanded="false" aria-controls="hpl-faq-3"&gt;
+            &lt;span&gt;What if our schedule changes?&lt;/span&gt;
+            &lt;span class="hpl-faq-icon"&gt;&lt;svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"&gt;&lt;path d="M12 5v14M5 12h14"/&gt;&lt;/svg&gt;&lt;/span&gt;
+          &lt;/button&gt;
+          &lt;div class="hpl-faq-panel" id="hpl-faq-3" role="region"&gt;&lt;div class="hpl-faq-inner"&gt;&lt;div class="hpl-faq-body"&gt;
+            &lt;p&gt;Use the reschedule link in your confirmation email or text.&lt;/p&gt;
+          &lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class="hpl-faq-item"&gt;
+          &lt;button type="button" class="hpl-faq-q" aria-expanded="false" aria-controls="hpl-faq-4"&gt;
+            &lt;span&gt;Is everything remote?&lt;/span&gt;
+            &lt;span class="hpl-faq-icon"&gt;&lt;svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"&gt;&lt;path d="M12 5v14M5 12h14"/&gt;&lt;/svg&gt;&lt;/span&gt;
+          &lt;/button&gt;
+          &lt;div class="hpl-faq-panel" id="hpl-faq-4" role="region"&gt;&lt;div class="hpl-faq-inner"&gt;&lt;div class="hpl-faq-body"&gt;
+            &lt;p&gt;Yes. Calls happen over Zoom, so you can join from anywhere.&lt;/p&gt;
+          &lt;/div&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+
+  &lt;!-- 5. Final CTA --&gt;
+  &lt;section class="hpl-section hpl-cta"&gt;
+    &lt;div class="hpl-wrap"&gt;
+      &lt;h2&gt;Ready to get started?&lt;/h2&gt;
+      &lt;p&gt;Grab a time when both parent and athlete can be there.&lt;/p&gt;
+      &lt;button type="button" class="hpl-btn" data-hpl-scroll="calendar-section"&gt;
+        &lt;svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;&lt;path d="M12 19V5M5 12l7-7 7 7"/&gt;&lt;/svg&gt;
+        Schedule your call
+      &lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/section&gt;
+
+&lt;/div&gt;
+
+&lt;script&gt;
+(function () {
+  var root = document.currentScript &amp;&amp; document.currentScript.previousElementSibling;
+  if (!root || !root.classList || !root.classList.contains('hpl-book2')) root = document.querySelector('.hpl-book2');
+  if (!root || root.getAttribute('data-hpl-init')) return;
+  root.setAttribute('data-hpl-init', '1');
+
+  // Click-to-load YouTube: iframe is only created on click
+  root.querySelectorAll('[data-hpl-yt]').forEach(function (box) {
+    var btn = box.querySelector('.hpl-video-play');
+    if (!btn) return;
+    var thumb = btn.querySelector('img');
+    if (thumb) {
+      var hide = function () { thumb.style.visibility = 'hidden'; };
+      thumb.addEventListener('error', hide);
+      if (thumb.complete &amp;&amp; thumb.naturalWidth === 0 &amp;&amp; thumb.getAttribute('src')) hide();
+    }
+    btn.addEventListener('click', function () {
+      var id = box.getAttribute('data-hpl-yt');
+      var f = document.createElement('iframe');
+      f.src = 'https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1&amp;rel=0&amp;modestbranding=1&amp;playsinline=1';
+      f.title = btn.getAttribute('aria-label') || 'Testimonial video';
+      f.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+      f.allowFullscreen = true;
+      box.innerHTML = '';
+      box.appendChild(f);
+    });
+  });
+
+  // Headshot: fall back to initials if no URL or the image fails
+  root.querySelectorAll('img[data-hpl-headshot]').forEach(function (img) {
+    var src = (img.getAttribute('src') || '').trim();
+    if (!src) { img.remove(); return; }
+    img.addEventListener('error', function () { img.remove(); });
+  });
+
+  // FAQ accordion (collapsed by default)
+  root.querySelectorAll('.hpl-faq-q').forEach(function (q) {
+    q.addEventListener('click', function () {
+      var panel = document.getElementById(q.getAttribute('aria-controls'));
+      var open = q.getAttribute('aria-expanded') === 'true';
+      q.setAttribute('aria-expanded', open ? 'false' : 'true');
+      if (panel) panel.classList.toggle('is-open', !open);
+    });
+  });
+
+  // Smooth scroll back up to the GHL calendar element
+  root.querySelectorAll('[data-hpl-scroll]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var target = document.getElementById(btn.getAttribute('data-hpl-scroll'));
+      if (!target) return;
+      var reduce = window.matchMedia &amp;&amp; window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var top = target.getBoundingClientRect().top + window.pageYOffset - 16;
+      window.scrollTo({ top: top, behavior: reduce ? 'auto' : 'smooth' });
+    });
+  });
+})();
+&lt;/script&gt;
+</textarea>
+    </details>
+  </section>
+
+  <div class="note">
+    <p><strong>Headshot:</strong> in Block 2, find <code class="inline">src=""</code> next to <code class="inline">data-hpl-headshot</code> and paste your image URL between the quotes. Until then a "JH" circle shows.</p>
+    <p><strong>Videos won't play in the editor preview.</strong> They load on the live, published page.</p>
+  </div>
+</main>
+
+<script>
+  document.querySelectorAll('.copy').forEach(function (btn) {
+    var label = btn.querySelector('span');
+    var original = label.textContent;
+    var status = btn.nextElementSibling;
+    var ta = document.getElementById(btn.getAttribute('data-target'));
+
+    function fallback() {
+      var d = ta.closest('details'); if (d) d.open = true;
+      ta.focus(); ta.select(); ta.setSelectionRange(0, ta.value.length);
+      var ok = false;
+      try { ok = document.execCommand('copy'); } catch (e) {}
+      if (ok) return done();
+      status.textContent = 'Your browser blocked automatic copy. The code is selected below: press Ctrl+C (Cmd+C on Mac), or long-press and choose Copy.';
+      status.classList.add('warn');
+    }
+    function done() {
+      btn.classList.add('done');
+      label.textContent = 'Copied!';
+      status.classList.remove('warn');
+      status.textContent = 'Copied ' + ta.value.split('\n').length + ' lines. Paste it into the GHL code editor.';
+      setTimeout(function () { btn.classList.remove('done'); label.textContent = original; }, 2500);
+    }
+    btn.addEventListener('click', function () {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(ta.value).then(done, fallback);
+      } else { fallback(); }
+    });
+  });
+</script>
