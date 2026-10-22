@@ -366,7 +366,8 @@
   // Smooth scroll back up to the GHL calendar element
   root.querySelectorAll('[data-hpl-scroll]').forEach(function (btn) {
     btn.addEventListener('click', function () {
-      var target = document.getElementById(btn.getAttribute('data-hpl-scroll'));
+      // Prefer the calendar's own ID; otherwise use the marker at the bottom of Block 1
+      var target = document.getElementById(btn.getAttribute('data-hpl-scroll')) || document.getElementById('hpl-calendar-anchor');
       if (!target) return;
       var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       var top = target.getBoundingClientRect().top + window.pageYOffset - 16;

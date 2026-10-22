@@ -80,7 +80,7 @@
     <li>In the GHL page builder, add a <strong>Code</strong> element (Custom HTML/Javascript) where the block goes.</li>
     <li>Click <strong>Open Code Editor</strong>, then select everything already in it and delete it.</li>
     <li>Tap the Copy button below, paste into the editor, and click <strong>Save</strong>.</li>
-    <li>Set the calendar element's ID to <code class="inline">calendar-section</code> so the bottom button can scroll to it.</li>
+    <li><strong>Optional:</strong> set the calendar element's ID to <code class="inline">calendar-section</code>. If you skip this, the bottom button still scrolls to the "Pick a time" line right above the calendar.</li>
   </ol>
 
   <section class="block" aria-labelledby="h-b1">
@@ -204,7 +204,7 @@
         &lt;p&gt;&lt;strong&gt;Important:&lt;/strong&gt; A parent and an athlete must be present on the call.&lt;/p&gt;
       &lt;/div&gt;
 
-      &lt;p class="hpl-pick"&gt;
+      &lt;p class="hpl-pick" id="hpl-calendar-anchor"&gt;
         Pick a time when both of you can be there.
         &lt;svg class="hpl-pick-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"&gt;&lt;path d="M12 5v14M5 12l7 7 7-7"/&gt;&lt;/svg&gt;
       &lt;/p&gt;
@@ -219,7 +219,7 @@
     <div class="block-head">
       <span class="eyebrow">Block 2</span>
       <h2 id="h-b2">Below the calendar</h2>
-      <p class="where">What to expect, 3 testimonial videos, your bio, FAQ, and the "Schedule your call" button. 377 lines.</p>
+      <p class="where">What to expect, 3 testimonial videos, your bio, FAQ, and the "Schedule your call" button. 378 lines.</p>
     </div>
     <button type="button" class="copy" data-target="code-b2">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
@@ -596,7 +596,8 @@
   // Smooth scroll back up to the GHL calendar element
   root.querySelectorAll('[data-hpl-scroll]').forEach(function (btn) {
     btn.addEventListener('click', function () {
-      var target = document.getElementById(btn.getAttribute('data-hpl-scroll'));
+      // Prefer the calendar's own ID; otherwise use the marker at the bottom of Block 1
+      var target = document.getElementById(btn.getAttribute('data-hpl-scroll')) || document.getElementById('hpl-calendar-anchor');
       if (!target) return;
       var reduce = window.matchMedia &amp;&amp; window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       var top = target.getBoundingClientRect().top + window.pageYOffset - 16;
